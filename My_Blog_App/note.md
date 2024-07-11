@@ -110,11 +110,113 @@ export class Service {
         // write the code
     }
 
+    async getFilePreview(FileId){
+        // write the code
+    }
+
 
 }
 
 const service = new Service()
 export default service
 ```
+
+#### Now we are create the store folder in src and in this folder we are creating a **store.js** file
+- why we use store ? 
+    - Because store needs all  the information of the reducers
+
+```javascript
+import  {configureStore} from '@reduxjs/toolkit'
+const store = configureStore({
+    reducer: {
+        // write the code
+    }
+})
+```
+
+Now we create a **authSlice.js** file in store folder
+- Why we use slice ?
+    - Because we need to create a slice for each reducer 
+    - slice is used to track the **authentication** (we will ask from the store that user is authenticated or  not)
+
+
+
+```javascript
+import {createSlice} from '@reduxjs/toolkit'
+
+const initialState = {
+    status : false,
+    userData : null,
+}
+const authSlice = createSlice({
+    name : 'auth',
+    initialState,
+    reducers : {
+        // write the code
+    }
+})
+export default authSlice.reducer;
+```
+
+We will create a **components folder** in the src and create **Header and Footer** and inside it we will create a **Header.jsx and Footer.jsx**
+- Why we use **Header.jsx and Footer.jsx** ?
+    - Because we need to create a header and footer for our application
+```javascript
+import React from 'react'
+
+function Header() {
+  return (
+    <div>
+      Header
+    </div>
+  )
+}
+
+export default Header
+
+```
+```javascript
+import React from 'react'
+
+function Footer() {
+  return (
+    <div>
+      Footer
+    </div>
+  )
+}
+
+export default Footer
+
+```
+- Now we will create a **index.js** file
+    - We will import the **Header and Footer** and we will render it in the **index.js**
+```javascript
+import Header from "./Header/Header";
+import Footer from "./Footer/Footer";
+
+export{
+    Header,
+    Footer
+}
+```
+
+Now we will create a **pages folder** in src and in this folder we will a create a file 
+
+Now we will create a **component** folder and create a different ***Components*** as our need
+
+
+### **ForwardRef Hook**
+
+The **forwardRef** hook in React is a function that lets you pass a ref through a component to one of its child components. This can be particularly useful for integrating with third-party libraries or handling imperative actions on a child component.
+
+- forwardRef is particularly useful when you need to directly manipulate a child component's DOM node.
+- Syntax: const Component = forwardRef((props, ref) => { ... });
+
+- Compatibility: Works with both functional and class components.
+
+- Common Use: Forwarding refs to custom input components for form handling, animations, or integrating with non-React libraries.
+
+
 
 
