@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import authService from "../appwrite/auth";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../store/authSlice";
-import { Button, Input, Logo } from "./index";
+import { Button, Input, Logo } from "./index.js";
 import { useForm } from "react-hook-form";
 
 function SignUp() {
@@ -27,6 +27,26 @@ function SignUp() {
       setError(error.message);
     }
   };
+
+  // const passwordValidation = {
+  //   required: "Password is required",
+  //   minLength: {
+  //     value: 8,
+  //     message: "Password must be at least 8 characters long"
+  //   },
+  //   maxLength: {
+  //     value: 265,
+  //     message: "Password must be less than 265 characters long"
+  //   },
+  //   validate: {
+  //     notCommon: value => !isCommonPassword(value) || "Password is too common"
+  //   }
+  // };
+
+  // const isCommonPassword = (password) => {
+  //   const commonPasswords = ['123456', 'password', '12345678', 'qwerty', 'abc123'];
+  //   return commonPasswords.includes(password);
+  // };
   return (
     <div className="flex items-center justify-content">
       <div
@@ -62,7 +82,6 @@ function SignUp() {
               type="text"
               {...register("name", {
                 required: true,
-                minLength: 3,
               })}
             />
 
@@ -87,7 +106,6 @@ function SignUp() {
               placeholder="Enter your password"
               {...register("password", {
                 required: true,
-                minLength: 6,
               })}
             />
 

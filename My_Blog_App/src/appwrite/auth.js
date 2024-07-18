@@ -1,9 +1,11 @@
-import conf from "../conf/conf";
+import conf from "../conf/conf.js";
 import {Client, Account, ID} from "appwrite"
 
 export class AuthService {
     client = new Client()
     account
+
+
 
     constructor(){
         this.client
@@ -29,8 +31,7 @@ export class AuthService {
 
     async login({email, password}){
         try {
-            await this.account.createEmailPasswordSession({email, password})
-            
+            return await this.account.createEmailPasswordSession(email, password);
         } catch (error) {
             throw error;
         }
@@ -38,11 +39,16 @@ export class AuthService {
 
     async getCurrentUser(){
         try {
-            return await this.account.get()
+            return await this.account.get();
             
         } catch (error) {
-            console.log("Appwrite service :: getCurrentUser :: error", error)
-        }
+            if (error.code === 401) {
+                console.error("User is not authenticated. Redirecting to login...");
+                
+               
+            } else {
+                console.error("Appwrite service :: getCurrentUser :: error", error);
+            }        }
 
         return null;
     }

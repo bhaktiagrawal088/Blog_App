@@ -1,4 +1,4 @@
-import conf from "../conf/conf";
+import conf from "../conf/conf.js";
 import { Client, ID, Databases, Storage, Query } from "appwrite";
 
 export class Service {
@@ -17,7 +17,7 @@ export class Service {
     async createPost({title, slug, content,  featureImage, status, userId}){
         try {
             return await this.databases.createDocument(
-                conf.ppwriteDatabaseId,
+                conf.appwriteDatabaseId,
                 conf.appwriteCollectionId,
                 slug,
                 {
@@ -38,7 +38,7 @@ export class Service {
     async updatePost(slug, {title, content, featureImage, status}){
         try {
             return await this.databases.updateDocument(
-                conf.ppwriteDatabaseId,
+                conf.appwriteDatabaseId,
                 conf.appwriteCollectionId,
                 slug,
                 {
@@ -57,7 +57,7 @@ export class Service {
     async deletePost(slug){
         try {
             await this.databases.deleteDocument(
-                conf.ppwriteDatabaseId,
+                conf.appwriteDatabaseId,
                 conf.appwriteCollectionId,
                 slug,
 
@@ -73,20 +73,21 @@ export class Service {
     async getPost(slug){
         try {
             return await this.databases.getDocument(
-                conf.ppwriteDatabaseId,
+                conf.appwriteDatabaseId,
                 conf.appwriteCollectionId,
                 slug
             )
             
         } catch (error) {
             console.log("Appwrite service :: deletePost :: error" , error);
+            return false;
         }
     }
 
     async getPosts(queries = [Query.equal("status", "active")]){
         try {
-            await this.databases.listDocuments(
-                conf.ppwriteDatabaseId,
+            return await this.databases.listDocuments(
+                conf.appwriteDatabaseId,
                 conf.appwriteCollectionId,
                 queries,
             )
@@ -97,6 +98,26 @@ export class Service {
             return false;
         }
     }
+    // async getPosts(){
+    //     try {
+    //         const collection = await this.databases.getCollection(
+    //             conf.appwriteDatabaseId, conf.appwriteCollectionId);
+    //             const schema = collection.schema;
+    //         if (schema.attributes.status) {
+    //             return await this.databases.listDocuments(
+    //                 conf.appwriteDatabaseId,
+    //                 conf.appwriteCollectionId,
+    //                 [Query.equal("status", "active")]
+    //             )
+    //         } else {
+    //             console.log("Status attribute does not exist in the schema");
+    //             return false;
+    //         }
+    //     } catch (error) {
+    //         console.log("Appwrite service :: getPosts :: error", error);
+    //         return false;
+    //     }
+    // }
 
     async uploadFile(file){
         try {
@@ -114,7 +135,7 @@ export class Service {
 
     async deletePost(fileId){
         try {
-            return await this.bucket.deleteFile(
+            await this.bucket.deleteFile(
                 conf.appwriteBucketId,
                 fileId,
             ) 
@@ -126,7 +147,7 @@ export class Service {
 
     async getFilePreview(fileId){
         try {
-            return await this.bucket.getFilePreview(
+            return this.bucket.getFilePreview(
                 conf.appwriteBucketId,
                 fileId,
             )

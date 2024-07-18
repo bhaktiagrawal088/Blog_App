@@ -15,7 +15,7 @@ function Login() {
     const login = async(data) => {
         setError(" ")
         try {
-            const session = await authService.login(data.email, data.password)
+            const session = await authService.login(data)
             if(session){
                 const userData = await authService.getCurrentUser()
                 if(userData) dispatch(authLogin(userData))
@@ -26,7 +26,29 @@ function Login() {
             setError(err.message)
         }
     }
+
+    // const passwordValidation = {
+    //     required: "Password is required",
+    //     minLength: {
+    //       value: 8,
+    //       message: "Password must be at least 8 characters long"
+    //     },
+    //     maxLength: {
+    //       value: 265,
+    //       message: "Password must be less than 265 characters long"
+    //     },
+    //     validate: {
+    //       notCommon: value => !isCommonPassword(value) || "Password is too common"
+    //     }
+    //   };
+    
+    //   const isCommonPassword = (password) => {
+    //     const commonPasswords = ['123456', 'password', '12345678', 'qwerty', 'abc123'];
+    //     return commonPasswords.includes(password);
+    //   };
+
   return (
+    <>
     <div className='flex items-center justify-center w-full'> 
         <div className={`mx-auto w-full max-w-lg bg-gray-100 rounded-xl p-10 border border-black/10`}>
             <div className='mb-2 flex justify-center '>
@@ -36,10 +58,10 @@ function Login() {
             </div>
                 <h2 className='text-center text-2xl font-bold leading-tight'>Sign in to your account</h2>
                 <p className='mt-2 text-center text-base text-black/60'>
-                Don&apos;t have  any account?&nbsb;
-                <link to='/signup' className='font-medium text-primary transition-all duration-200 hover:underline'>
+                Don&apos;t have  any account?&nbsp;
+                <Link to='/signup' className='font-medium text-primary transition-all duration-200 hover:underline'>
                     Sign Up
-                </link>
+                </Link>
                 </p>
                 {error && <p className='text-red-600 mt-8 text-center'>{error}</p>}
 
@@ -66,7 +88,7 @@ function Login() {
                             placeholder= 'Enter your password'
                             {...register('password', {
                                 required: true,
-                                minLength: 6,
+                
                                 })}
                         />
 
@@ -81,7 +103,8 @@ function Login() {
         </div>
       
     </div>
+    </>
   )
-}
+  }
 
 export default Login

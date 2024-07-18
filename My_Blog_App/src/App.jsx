@@ -32,17 +32,13 @@ function App() {
       <div className='w-full block'>
         <Header/>
           <main>
-            {/* <Outlet/> */}
+             TODO : <Outlet/> 
           </main>
         <Footer/>
       </div>
     </div>
   ) :null
-  return (
-   <>
-    <h1>This is my blog</h1>
-   </>
-  )
+  
 }
 
 export default App

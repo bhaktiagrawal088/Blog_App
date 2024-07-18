@@ -3,10 +3,10 @@ import { useForm } from "react-hook-form";
 import { Button, Input, Select, RTE } from "../index";
 import appwriteService from "../../appwrite/config";
 import { useNavigate } from "react-router-dom";
-import { batch, useSelector } from "react-redux";
+import {  useSelector } from "react-redux";
 
 function PostForm({ post }) {
-  const [register, handleSubmit, watch, setvalue, control, getValues] = useForm(
+  const {register, handleSubmit, watch, setValue, control, getValues} = useForm(
     {
       defaultValues: {
         title: post?.title || "",
@@ -22,16 +22,15 @@ function PostForm({ post }) {
 
   const submit = async (data) => {
     if (post) {
-      data.image[0] ? appwriteService.uploadFile(data.image[0]) : null;
+      const file = data.image[0] ? appwriteService.uploadFile(data.image[0]) : null;
 
       if (file) {
-        appwriteService.deleteFile(post, featuredImage);
+        appwriteService.deleteFile(post.featureImage);
       }
       const dbPost = await appwriteService.updatePost(post.$id, {
         ...data,
         featureImage: file ? file.$id : undefined,
-      });
-      if (dbPost) {
+      });      if (dbPost) {
         navigate(`/post/${dbPost.$id}`);
       }
     } else {
@@ -64,7 +63,7 @@ function PostForm({ post }) {
   React.useEffect(() => {
     const subscription = watch((value, { name }) => {
       if (name === "title") {
-        setvalue("slug", slugTransform(value.title, { shouldValidate: true }));
+        setValue("slug", slugTransform(value.title, { shouldValidate: true }));
       }
     });
 
@@ -87,9 +86,7 @@ function PostForm({ post }) {
           className="mb-4"
           {...register("slug", { required: true })}
           onInput={(e) => {
-            setValue("slug", slugTransform(e.currentTarget.value), {
-              shouldValidate: true,
-            });
+            setValue("slug", slugTransform(e.currentTarget.value), {shouldValidate: true});
           }}
         />
         <RTE

@@ -13,11 +13,12 @@ function Home() {
     },[])
   if(posts.length == 0){
     return <div className='w-full py-8 mt-4 text-center'>
-        <h1>There are no posts yet</h1>
         <Container>
             <div className='flex flex-wrap'>
                 <div className='w-full p-2'>
-                    <h1 className='text-2xl font-bold hover:text-gray-500'>Login to read this post</h1>
+                    <h1 className='text-2xl font-bold hover:text-gray-500'>
+                        Login to read posts
+                    </h1>
 
                 </div>
             </div>
