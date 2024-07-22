@@ -1,6 +1,14 @@
 import conf from "../conf/conf.js";
 import {Client, Account, ID} from "appwrite"
 
+class AppwriteException extends Error {
+    constructor(message, status, type, data) {
+        super(message);
+        this.status = status;
+        this.type = type;
+        this.data = data;
+    }
+}
 export class AuthService {
     client = new Client()
     account
@@ -17,6 +25,7 @@ export class AuthService {
     async createAccount({email, password, name}){
         try {
             const userAccount = await this.account.create(ID.unique(), email, password, name )
+            console.log(userAccount)
             if (userAccount) {
                 // call another method
                 return this.login({email, password})
@@ -36,10 +45,23 @@ export class AuthService {
             throw error;
         }
     }
+    // async login({ email, password }) {
+    //     try {
+    //         const session = await this.account.createEmailSession(email, password);
+    //         if (session) {
+    //             localStorage.setItem('appwriteSession', JSON.stringify(session));
+    //             return session;
+    //         }
+    //     } catch (error) {
+    //         throw error;
+    //     }
+    // }
 
     async getCurrentUser(){
         try {
-            return await this.account.get();
+            const acc = await this.account.get();
+            console.log(acc)
+            return acc;
             
         } catch (error) {
             if (error.code === 401) {
@@ -48,7 +70,8 @@ export class AuthService {
                
             } else {
                 console.error("Appwrite service :: getCurrentUser :: error", error);
-            }        }
+            }        
+        }
 
         return null;
     }

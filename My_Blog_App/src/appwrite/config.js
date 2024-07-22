@@ -8,15 +8,16 @@ export class Service {
 
     constructor(){
         this.client
-            .setEndpoint(conf.appwriteUrl)
-            .setProject(conf.appwriteProjectId);
-        this.databases = new Databases(this.client)
-        this.bucket = new Storage(this.client)
+        .setEndpoint(conf.appwriteUrl)
+        .setProject(conf.appwriteProjectId);
+        this.databases = new Databases(this.client);
+        this.bucket = new Storage(this.client);
+        
     }
 
     async createPost({title, slug, content,  featureImage, status, userId}){
         try {
-            return await this.databases.createDocument(
+            const createpost = await this.databases.createDocument(
                 conf.appwriteDatabaseId,
                 conf.appwriteCollectionId,
                 slug,
@@ -27,7 +28,10 @@ export class Service {
                     status, 
                     userId
                 }
+
             )
+            console.log(createpost)
+            return createpost
             
         } catch (error) {
             console.log("Appwrite service :: createPost :: error ", error)
@@ -86,13 +90,13 @@ export class Service {
 
     async getPosts(queries = [Query.equal("status", "active")]){
         try {
-            return await this.databases.listDocuments(
+            const pos =  await this.databases.listDocuments(
                 conf.appwriteDatabaseId,
                 conf.appwriteCollectionId,
                 queries,
             )
-
-            
+            console.log(pos)
+            return pos;
         } catch (error) {
             console.log("Appwrite service :: getPosts :: error", error);
             return false;
@@ -139,6 +143,7 @@ export class Service {
                 conf.appwriteBucketId,
                 fileId,
             ) 
+            return true
         } catch (error) {
             console.log("Appwrite service :: deleteFile :: error", error);
             return false;
